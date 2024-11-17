@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www/thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}"
+      lang="en">
+<div layout:fragment="content">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Register Page</h5>
+            <form action="/board/modify" method="post">
+                <input type="hidden" name="bno" th:value="${dto.bno}">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">제목</span>
+                    <input type="text" name="title" class="form-control" th:value="${dto.title}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">내용</span>
+                    <textarea name="content" class="form-control col-sm-5" rows="5">[[${dto.content}]]</textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">작성자</span>
+                    <input type="text" name="writer" class="form-control" th:value="${dto.writer}">
+                </div>
+                <div class="input-group mb-3">
+                    <button type="button" id="modifyBtn" class="btn btn-outline-success btn-sm">수정</button>
+                    <button type="button" id="removeBtn" class="btn btn-outline-danger btn-sm">초기화</button>
+                    <button type="button" id="listBtn" class="btn btn-outline-secondary btn-sm">뒤로</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<script layout:fragment="script" th:inline="javascript">
+    const formObj=document.querySelector("form");
+    document.querySelector("#modifyBtn").addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+        formObj.action="/board/modify"
+        formObj.method="post"
+        formObj.submit()
+    }, false)
+    document.querySelector("#removeBtn").addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+        formObj.action="/board/remove"
+        formObj.method="post"
+        formObj.submit()
+    }, false)
+    document.querySelector("#listBtn").addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+        formObj.reset()
+        self.location="/board/list"
+    }, false)
+</script>
+</html>
