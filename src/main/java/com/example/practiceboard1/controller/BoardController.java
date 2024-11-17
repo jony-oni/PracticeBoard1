@@ -1,6 +1,9 @@
 package com.example.practiceboard1.controller;
 
 import com.example.practiceboard1.domain.Board;
+import com.example.practiceboard1.dto.BoardDTO;
+import com.example.practiceboard1.dto.PageRequestDTO;
+import com.example.practiceboard1.dto.PageResponseDTO;
 import com.example.practiceboard1.service.BoardService;
 import groovy.util.logging.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +21,12 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+
     @GetMapping("/list")
-    public void list(Model model){
-        model.addAttribute("boardList",boardService.getList());
+    public void list(PageRequestDTO pageRequestDTO,Model model){
+        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+        model.addAttribute("responseDTO", responseDTO);
+
     }
 
     @GetMapping("/register")
@@ -34,12 +40,12 @@ public class BoardController {
     }
 
     @GetMapping({"/read","modify"})
-    public void read(Long bno, Model model){
+    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
         model.addAttribute("dto",boardService.getBoard(bno));
     }
 
     @PostMapping("/modify")
-    public String modify(Board board, RedirectAttributes redirectAttributes){
+    public String modify(Board board, PageRequestDTO pageRequestDTO,RedirectAttributes redirectAttributes){
         boardService.updateBoard(board);
         redirectAttributes.addAttribute("bno",board.getBno());
         return "redirect:/board/read";
