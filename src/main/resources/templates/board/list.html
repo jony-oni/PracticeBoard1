@@ -45,7 +45,8 @@
                 <tbody>
                 <tr th:each="dto:${responseDTO.dtoList}">
                     <th scope="row">[[${dto.bno}]]</th>
-                    <td><a th:href="@{/board/read(bno=${dto.bno})}">[[${dto.title}]]</a></td>
+<!--                    <td><a th:href="@{/board/read(bno=${dto.bno})}">[[${dto.title}]]</a></td>-->
+                    <td>[[${dto.title}]]</td>
                     <td>[[${dto.writer}]]</td>
                     <td>[[${#temporals.format(dto.postdate,'yyyy-MM-dd')}]]</td>
                 </tr>

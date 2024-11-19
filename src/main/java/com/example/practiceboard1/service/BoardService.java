@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface BoardService {
 
-    Board getBoard(Long bno);
-    void registerBoard(Board board);
-    void updateBoard(Board board);
+    BoardDTO getBoard(Long bno);
+    Long registerBoard(BoardDTO boardDTO);
+    void updateBoard(BoardDTO boardDTO);
     void deleteBoard(Long bno);
 
     PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);

@@ -21,39 +21,45 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-
     @GetMapping("/list")
-    public void list(PageRequestDTO pageRequestDTO,Model model){
+    public void list(PageRequestDTO pageRequestDTO, Model model) {
         PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
+    }ㄹㅇㅇㄴㄹㅇ
 
-    }
 
-    @GetMapping("/register")
-    public void registerGet(){
-
-    }
-    @PostMapping("/register")
-    public String registerPost(Board board){
-        boardService.registerBoard(board);
-        return "redirect:/board/list";
-    }
-
-    @GetMapping({"/read","modify"})
-    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
-        model.addAttribute("dto",boardService.getBoard(bno));
-    }
-
-    @PostMapping("/modify")
-    public String modify(Board board, PageRequestDTO pageRequestDTO,RedirectAttributes redirectAttributes){
-        boardService.updateBoard(board);
-        redirectAttributes.addAttribute("bno",board.getBno());
-        return "redirect:/board/read";
-    }
-
-    @PostMapping("/remove")
-    public String remove(Board board){
-        boardService.deleteBoard(board.getBno());
-        return "redirect:/board/list";
-    }
+//    @GetMapping("/list")
+//    public void list(PageRequestDTO pageRequestDTO,Model model){
+//        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+//        model.addAttribute("responseDTO", responseDTO);
+//
+//    }
+//
+//    @GetMapping("/register")
+//    public void registerGet(){
+//
+//    }
+//    @PostMapping("/register")
+//    public String registerPost(Board board){
+//        boardService.registerBoard(board);
+//        return "redirect:/board/list";
+//    }
+//
+//    @GetMapping({"/read","modify"})
+//    public void read(Long bno, PageRequestDTO pageRequestDTO, Model model){
+//        model.addAttribute("dto",boardService.getBoard(bno));
+//    }
+//
+//    @PostMapping("/modify")
+//    public String modify(Board board, PageRequestDTO pageRequestDTO,RedirectAttributes redirectAttributes){
+//        boardService.updateBoard(board);
+//        redirectAttributes.addAttribute("bno",board.getBno());
+//        return "redirect:/board/read";
+//    }
+//
+//    @PostMapping("/remove")
+//    public String remove(Board board){
+//        boardService.deleteBoard(board.getBno());
+//        return "redirect:/board/list";
+//    }
 }

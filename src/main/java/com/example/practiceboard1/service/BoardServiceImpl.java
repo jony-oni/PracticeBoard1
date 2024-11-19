@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,22 +30,25 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public Board getBoard(Long bno) {
-       return boardRepository.findById(bno).get();
+    public BoardDTO getBoard(Long bno) {
+        Optional<Board> result = boardRepository.findById(bno);
+        Board board = result.orElseThrow();
+        BoardDTO boardDTO = modelMapper.map(board, BoardDTO.class);
+        return boardDTO;
     }
 
     @Override
-    public void registerBoard(Board board) {
-        boardRepository.save(board);
+    public Long registerBoard(BoardDTO boardDTO) {
+        Board board = modelMapper.map(boardDTO, Board.class);
+        Long bno = boardRepository.save(board).getBno();
+        return bno;
     }
 
     @Override
-    public void updateBoard(Board board) {
-        Board oldBoard = boardRepository.findById(board.getBno()).get();
-        oldBoard.setTitle(board.getTitle());
-        oldBoard.setContent(board.getContent());
-        oldBoard.setWriter(board.getWriter());
-        boardRepository.save(oldBoard);
+    public void updateBoard(BoardDTO boardDTO) {
+        Optional<Board> result = boardRepository.findById(boardDTO.getBno());
+        Board board = result.orElseThrow();
+        board.change(boardDTO.getTitle(), boardDTO.getContent());
 
     }
 
@@ -56,12 +60,17 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+        String[] types = pageRequestDTO.getTypes();
+        String keyword = pageRequestDTO.getKeyword();
         Pageable pageable=pageRequestDTO.getPageable("bno");
+
         //Page<Board> result = boardRepository.findAll(pageable);
-        Page<Board> result = boardRepository.searchAll(pageRequestDTO.getKeyword(),pageable);
+        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
+
         List<BoardDTO> dtoList=result.getContent().stream()
                 .map(board -> modelMapper.map(board, BoardDTO.class))
                 .collect(Collectors.toUnmodifiableList());
+
         return PageResponseDTO.<BoardDTO>withAll()
                 .pageRequestDTO(pageRequestDTO)
                 .dtoList(dtoList)

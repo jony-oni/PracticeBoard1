@@ -1,6 +1,7 @@
 package com.example.practiceboard1.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,4 +31,6 @@ public class Board {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime postdate;
 
+    public void change(@NotEmpty String title, @NotEmpty String content) {
+    }
 }
