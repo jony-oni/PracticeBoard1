@@ -9,11 +9,10 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 public interface BoardService {
-
+    List<Board> getList();
     BoardDTO getBoard(Long bno);
     Long registerBoard(BoardDTO boardDTO);
     void updateBoard(BoardDTO boardDTO);
     void deleteBoard(Long bno);
-
-    PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);
+   // PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO);
 }

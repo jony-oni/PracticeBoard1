@@ -32,7 +32,7 @@ public class BoardTest {
     @Test
     public void testModify(){
         BoardDTO boardDTO = BoardDTO.builder()
-                .bno(2L)
+                .bno(52L)
                 .title("title_modify")
                 .content("content_modify")
                 .writer("writer_modify")
@@ -40,17 +40,17 @@ public class BoardTest {
         boardService.updateBoard(boardDTO);
     }
 
-    @Test
-    public void testList(){
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
-                .type("tcw")
-                .keyword("title")
-                .page(1)
-                .size(8)
-                .build();
-        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
-
-    }
+    //@Test
+//    public void testList(){
+//        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+//                .type("tcw")
+//                .keyword("title")
+//                .page(1)
+//                .size(8)
+//                .build();
+//        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+//
+//    }
 
 
 

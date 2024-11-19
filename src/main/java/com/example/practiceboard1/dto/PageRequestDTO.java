@@ -22,6 +22,7 @@ public class PageRequestDTO {
     private int size = 8;
     private String type; // 검색의 종류 t,c, w, tw, tc, twc
     private String keyword;
+    
     public String[] getTypes(){
         if(type == null || type.isEmpty()){
             return null;

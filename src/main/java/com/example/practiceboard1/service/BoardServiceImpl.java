@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +29,11 @@ public class BoardServiceImpl implements BoardService {
     private final ModelMapper   modelMapper;
 
 
+    @Override
+    public List<Board> getList() {
+        List<Board> boardList = boardRepository.findAll();
+        return boardList;
+    }
 
     @Override
     public BoardDTO getBoard(Long bno) {
@@ -46,9 +52,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public void updateBoard(BoardDTO boardDTO) {
-        Optional<Board> result = boardRepository.findById(boardDTO.getBno());
-        Board board = result.orElseThrow();
-        board.change(boardDTO.getTitle(), boardDTO.getContent());
+       Board oldBoard = boardRepository.findById(boardDTO.getBno()).get();
+       oldBoard.setTitle(boardDTO.getTitle());
+       oldBoard.setContent(boardDTO.getContent());
+       oldBoard.setWriter(boardDTO.getWriter());
+       boardRepository.save(oldBoard);
 
     }
 
@@ -58,23 +66,23 @@ public class BoardServiceImpl implements BoardService {
 
     }
 
-    @Override
-    public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
-        String[] types = pageRequestDTO.getTypes();
-        String keyword = pageRequestDTO.getKeyword();
-        Pageable pageable=pageRequestDTO.getPageable("bno");
-
-        //Page<Board> result = boardRepository.findAll(pageable);
-        Page<Board> result = boardRepository.searchAll(types, keyword, pageable);
-
-        List<BoardDTO> dtoList=result.getContent().stream()
-                .map(board -> modelMapper.map(board, BoardDTO.class))
-                .collect(Collectors.toUnmodifiableList());
-
-        return PageResponseDTO.<BoardDTO>withAll()
-                .pageRequestDTO(pageRequestDTO)
-                .dtoList(dtoList)
-                .total((int)result.getTotalElements())
-                .build();
-    }
+//    @Override
+//    public PageResponseDTO<BoardDTO> list(PageRequestDTO pageRequestDTO) {
+//        String[] types = pageRequestDTO.getTypes();
+//        String keyword = pageRequestDTO.getKeyword();
+//        Pageable pageable=pageRequestDTO.getPageable("bno");
+//
+//        //Page<Board> result = boardRepository.findAll(pageable);
+//        Page<Board> result = boardRepository.searchAll( keyword, pageable);
+//
+//        List<BoardDTO> dtoList=result.getContent().stream()
+//                .map(board -> modelMapper.map(board, BoardDTO.class))
+//                .collect(Collectors.toUnmodifiableList());
+//
+//        return PageResponseDTO.<BoardDTO>withAll()
+//                .pageRequestDTO(pageRequestDTO)
+//                .dtoList(dtoList)
+//                .total((int)result.getTotalElements())
+//                .build();
+//    }
 }
